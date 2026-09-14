@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarot Reflection Journal</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <main class="app">
+    <header class="header">
+      <div>
+        <p class="eyebrow">A space for reflection</p>
+        <h1>Tarot Reflection Journal</h1>
+      </div>
+      <button id="themeButton" class="icon-button" title="Change theme">☾</button>
+    </header>
+
+    <nav class="nav">
+      <button class="nav-button active" data-view="newReading">New Reading</button>
+      <button class="nav-button" data-view="journal">Journal</button>
+      <button class="nav-button" data-view="library">Card Library</button>
+      <button class="nav-button" data-view="insights">Insights</button>
+    </nav>
+
+    <section id="newReading" class="view active">
+      <div id="setupPanel" class="panel setup-panel">
+        <p class="eyebrow">Begin a reading</p>
+        <h2>Choose your spread</h2>
+
+        <label>
+          Spread
+          <select id="spreadSelect"></select>
+        </label>
+
+        <div id="spreadDescription" class="spread-description"></div>
+
+        <div id="customSpreadOptions" class="hidden">
+          <label>
+            Number of cards
+            <input id="customCount" type="number" min="1" max="10" value="3">
+          </label>
+
+          <label>
+            Position names, separated by commas
+            <input
+              id="customLabels"
+              type="text"
+              placeholder="Situation, Challenge, Advice"
+            >
+          </label>
+        </div>
+
+        <label>
+          What would you like guidance or reflection on?
+          <textarea
+            id="readingQuestion"
+            rows="3"
+            placeholder="Enter your question, or leave blank for a general reading..."
+          ></textarea>
+        </label>
+
+        <div class="two-column">
+          <label>
+            How are you feeling before this reading?
+            <select id="moodBefore">
+              <option value="">Not selected</option>
+              <option>Calm</option>
+              <option>Curious</option>
+              <option>Hopeful</option>
+              <option>Uncertain</option>
+              <option>Anxious</option>
+              <option>Overwhelmed</option>
+              <option>Sad</option>
+              <option>Frustrated</option>
+            </select>
+          </label>
+
+          <label>
+            Tags
+            <input id="readingTags" type="text" placeholder="Healing, creativity, decision">
+          </label>
+        </div>
+
+        <label class="toggle-row">
+          <input id="reversalsToggle" type="checkbox">
+          <span class="toggle"></span>
+          Include reversed cards
+        </label>
+
+        <button id="drawButton" class="primary-button" disabled>
+          Shuffle and draw
+        </button>
+
+        <p id="loadingMessage" class="helper">Loading the deck...</p>
+      </div>
+
+      <div id="shuffleOverlay" class="shuffle-overlay hidden">
+        <p class="eyebrow">Quiet your mind</p>
+        <h2>Shuffling the deck...</h2>
+
+        <div class="shuffle-deck">
+          <div class="shuffle-card card-one"></div>
+          <div class="shuffle-card card-two"></div>
+          <div class="shuffle-card card-three">
+            <svg viewBox="0 0 100 140" aria-hidden="true">
+              <path class="leaf-shape" d="M50 17
+                C34 22 24 34 23 49
+                C14 59 19 70 26 75
+                C21 88 30 98 40 101
+                C44 110 48 118 50 126
+                C52 118 56 110 60 101
+                C70 98 79 88 74 75
+                C81 70 86 59 77 49
+                C76 34 66 22 50 17Z"/>
+              <path class="leaf-vein" d="M50 25V119"/>
+              <path class="leaf-vein" d="M50 45L34 36M50 58L29 51M50 73L28 69M50 88L35 91"/>
+              <path class="leaf-vein" d="M50 45L66 36M50 58L71 51M50 73L72 69M50 88L65 91"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div id="readingPanel" class="hidden">
+        <div class="reading-header panel">
+          <div>
+            <p id="readingSpreadName" class="eyebrow"></p>
+            <h2 id="readingTitle"></h2>
+            <p id="readingQuestionDisplay" class="question-display"></p>
+          </div>
+          <button id="restartButton" class="secondary-button">New reading</button>
+        </div>
+
+        <div id="cardsArea" class="cards-area"></div>
+
+        <section class="panel closing-panel">
+          <p class="eyebrow">Bring it together</p>
+          <h2>Reading reflection</h2>
+
+          <label>
+            Overall reflection
+            <textarea
+              id="overallReflection"
+              rows="5"
+              placeholder="What connections, patterns, or feelings stand out?"
+            ></textarea>
+          </label>
+
+          <div class="two-column">
+            <label>
+              How do you feel now?
+              <select id="moodAfter">
+                <option value="">Not selected</option>
+                <option>Calm</option>
+                <option>Clear</option>
+                <option>Hopeful</option>
+                <option>Curious</option>
+                <option>Uncertain</option>
+                <option>Emotional</option>
+                <option>Motivated</option>
+                <option>Grounded</option>
+              </select>
+            </label>
+
+            <label>
+              Revisit this reading
+              <input id="followUpDate" type="date">
+            </label>
+          </div>
+
+          <label>
+            Takeaway or intention
+            <textarea
+              id="readingIntention"
+              rows="3"
+              placeholder="One thing I want to remember or act on..."
+            ></textarea>
+          </label>
+
+          <div class="reading-actions">
+            <button id="clarifierButton" class="secondary-button">
+              Draw one clarifying card
+            </button>
+            <button id="saveReadingButton" class="primary-button">
+              Save to journal
+            </button>
+          </div>
+
+          <p class="helper">Your unfinished reading saves automatically.</p>
+        </section>
+      </div>
+    </section>
+
+    <section id="journal" class="view">
+      <div class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Saved readings</p>
+            <h2>Your journal</h2>
+          </div>
+
+          <div class="backup-buttons">
+            <button id="exportButton" class="secondary-button">Export backup</button>
+
+            <label class="secondary-button file-button">
+              Restore backup
+              <input id="importInput" type="file" accept=".json">
+            </label>
+          </div>
+        </div>
+
+        <div class="filters">
+          <input id="journalSearch" type="search" placeholder="Search questions, cards, or tags">
+
+          <select id="journalSpreadFilter">
+            <option value="">All spreads</option>
+          </select>
+
+          <label class="check-label">
+            <input id="favoritesOnly" type="checkbox">
+            Favorites only
+          </label>
+        </div>
+
+        <div id="journalList"></div>
+      </div>
+    </section>
+
+    <section id="library" class="view">
+      <div class="panel">
+        <p class="eyebrow">The complete deck</p>
+        <h2>Card library</h2>
+        <input id="librarySearch" type="search" placeholder="Search cards or meanings">
+        <div id="libraryGrid" class="library-grid"></div>
+      </div>
+    </section>
+
+    <section id="insights" class="view">
+      <div class="panel">
+        <p class="eyebrow">Patterns over time</p>
+        <h2>Your insights</h2>
+        <div id="insightsContent"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./cards.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
